@@ -1,33 +1,31 @@
+from HS import HS
 from GWO import GWO
+from PSO import PSO
+from GA import GA
+from SA import SA_geometric, SA_linear
 from ui_mainwindow import Ui_MainWindow
-from PyQt5.QtGui import QPixmap
-from io import BytesIO
-from pyqtgraph import PlotWidget
-from PyQt5 import QtCore, QtGui, QtWidgets
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QGraphicsScene, QGraphicsPixmapItem
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-from PSO import PSO
-from SA import SA_geometric, SA_linear
+import seaborn as sns
+import matplotlib.patches as mpatches
+import numpy as np
 import functions
 from enumFunctions import Functions
-import seaborn as sns
-import pandas as pd
-import numpy as np
-import matplotlib.lines as mlines
-import matplotlib.patches as mpatches
+
+# bounds değişkenini tanımlayın
 bounds = [
     [-32.768, 32768], [-600, 600], [-500, 500], [-5.12, 5.12], [-5.12, 5.12],
     [-30.30], [-5.10], [-2048, 2048], [-10, 10]
 ]
-from solution import solution
 
 class MatplotlibWidget(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig, self.axes = plt.subplots(figsize=(width, height), dpi=dpi)
         super(MatplotlibWidget, self).__init__(fig)
         self.setParent(parent)
+
+# ... (Kodun geri kalanı)
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -45,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.algorithm_comboBox_2.currentIndexChanged.connect(self.toggle_layer)
         self.algorithm_comboBox_3.currentIndexChanged.connect(self.toggle_layer)
         self.Run_button.clicked.connect(self.button_clicked)
-        self.sol = solution()
+        self.sol = None
         self.algorithm_comboBox_type = 0
         self.clearGraphButton.clicked.connect(self.clear_graph)
 
@@ -70,13 +68,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             upper_bound = bounds[selected_index][1]
             self.sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
             self.algorithm_comboBox_type = 1
-            self.update_graph()
+            self.run_algorithm_iterations(num_gen)
 
-        if self.algorithm_comboBox_2.currentText() == "SA":
+        elif self.algorithm_comboBox.currentText() == "SA":
             selected_index = self.func_comboBox.currentIndex()
             dim = 30
             temp = int(self.sa_temp_2.text())
-            type = self.SA_type_2.currentText()
+            sa_type = self.SA_type_2.currentText()
             obj_func = self.function_select()
             lower_bounds = [None for _ in range(dim)]
             upper_bounds = [None for _ in range(dim)]
@@ -84,19 +82,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 lower_bounds[idx] = bounds[selected_index][0]
                 upper_bounds[idx] = bounds[selected_index][1]
 
-            if type == "Linear":
+            if sa_type == "Linear":
                 self.sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                             initial_temperature=temp, temperature_iterations=5000,
-                             final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
+                                     initial_temperature=temp, temperature_iterations=5000,
+                                     final_temperature=0.0001, alpha=0.9, target_function=obj_func, verbose=True)
             else:
                 self.sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                initial_temperature=temp, temperature_iterations=5000,
-                                final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
+                                        initial_temperature=temp, temperature_iterations=5000,
+                                        final_temperature=0.0001, alpha=0.9, target_function=obj_func, verbose=True)
 
             self.algorithm_comboBox_type = 2
-            self.update_graph()
+            self.run_algorithm_iterations(5000)
 
-        if self.algorithm_comboBox_3.currentText() == "GWO":
+        elif self.algorithm_comboBox.currentText() == "GWO":
             selected_index = self.algorithm_comboBox.currentIndex()
             dim = 30
             pop_size = int(self.pso_pop_size.text())
@@ -104,14 +102,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             obj_func = self.function_select()
             lower_bound = bounds[selected_index][0]
             upper_bound = bounds[selected_index][1]
-            SearchAgent_no = int(self.GWO_SearchAgentsNo_3.text())
-            Max_iter = int(self.GWO_maxIter_3.text())
-            decrease_From = int(self.GWO_decreaseFrom_3.text())
+            search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
+            max_iter = int(self.GWO_maxIter_3.text())
+            decrease_from = int(self.GWO_decreaseFrom_3.text())
 
-            self.sol = GWO(obj_func, lower_bound, upper_bound, dim, SearchAgent_no, Max_iter, decrease_From)
-            print(self.sol)
+            self.sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
             self.algorithm_comboBox_type = 3
-            self.update_graph()
+            self.run_algorithm_iterations(num_gen)
+
+        # Diğer algoritmalar için benzer değişiklikler...
+
+    def run_algorithm_iterations(self, num_iterations):
+        for i in range(num_iterations):
+            # Algoritmanın iterasyonlarını çalıştır
+            self.sol.run_iteration()
+
+            # Her iterasyon sonunda en iyi fitness değerini ve iterasyon numarasını al
+            iteration_number = i + 1
+            best_fitness_value = self.sol.get_best_fitness()
+
+            # En iyi fitness değerini ve iterasyon numarasını grafik üzerine çiz
+            self.plot_best_fitness(iteration_number, best_fitness_value)
+
+        self.update_graph()
 
     def function_select(self):
         func = self.func_comboBox.currentIndex()
@@ -139,31 +152,30 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.matplotlibWidget.draw()
 
     def update_graph(self):
-        existing_legend = self.matplotlibWidget.axes.get_legend()
-
-        if self.algorithm_comboBox_type == 1:
-            color = "red"
-            algorithm_name = self.algorithm_comboBox.currentText()
-        elif self.algorithm_comboBox_type == 2:
-            color = "blue"
-            algorithm_name = self.algorithm_comboBox_2.currentText()
-        elif self.algorithm_comboBox_type == 3:
-            color = "green"
-            algorithm_name = self.algorithm_comboBox_3.currentText()
-
-        line = sns.lineplot(x=self.sol.x, y=self.sol.y, ax=self.matplotlibWidget.axes, color=color, label=algorithm_name)
-
-        best_fitness_iteration = np.argmin(self.sol.y)
-        best_fitness_value = np.min(self.sol.y)
-        self.matplotlibWidget.axes.plot(best_fitness_iteration + 1, best_fitness_value, 'ro', label=f'Best Fitness ({algorithm_name})', markersize=8)
+        line = sns.lineplot(x=self.sol.x, y=self.sol.y, ax=self.matplotlibWidget.axes)
 
         self.matplotlibWidget.axes.set_xlabel('Iteration count')
         self.matplotlibWidget.axes.set_ylabel('Fitness value')
+        existing_legend = self.matplotlibWidget.axes.get_legend()
+
+        algorithm_names = ["PSO", "SA", "GWO", "GA", "HS"]
+        algorithm_colors = ["red", "blue", "green", "purple", "orange"]
+
+        algorithm_name = algorithm_names[self.algorithm_comboBox_type - 1]
+        algorithm_color = algorithm_colors[self.algorithm_comboBox_type - 1]
+
+        line.lines[0].set_color(algorithm_color)
+        legend_color = mpatches.Patch(color=algorithm_color, label=f"{algorithm_name}")
 
         if existing_legend:
-            self.matplotlibWidget.axes.legend(handles=existing_legend.legendHandles, loc=(1, 0.7))
+            self.matplotlibWidget.axes.legend(handles=existing_legend.legendHandles + [legend_color], loc=(1, 0.7))
         else:
-            self.matplotlibWidget.axes.legend(loc=(1, 0.7))
+            self.matplotlibWidget.axes.legend(handles=[legend_color], loc=(1, 0.7))
+
+        # Best fitness değerlerini göstermek için
+        best_fitness_iteration = np.argmin(self.sol.y)
+        best_fitness_value = np.min(self.sol.y)
+        self.plot_best_fitness(best_fitness_iteration + 1, best_fitness_value)
 
         self.matplotlibWidget.draw()
 
