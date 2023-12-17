@@ -1,4 +1,4 @@
-from GWO import GWO
+
 from ui_mainwindow import Ui_MainWindow
 from PyQt5.QtGui import QPixmap
 from io import BytesIO
@@ -10,6 +10,10 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from PSO import PSO
 from SA import SA_geometric, SA_linear
+from GWO import GWO
+from HS import HS
+from GA import GA
+
 import functions
 from enumFunctions import Functions
 import seaborn as sns
@@ -17,11 +21,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.lines as mlines
 import matplotlib.patches as mpatches
+from solution import solution
+
 bounds = [
     [-32.768, 32768], [-600, 600], [-500, 500], [-5.12, 5.12], [-5.12, 5.12],
     [-30.30], [-5.10], [-2048, 2048], [-10, 10]
 ]
-from solution import solution
 
 class MatplotlibWidget(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
@@ -60,6 +65,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.matplotlibWidget.draw()
 
     def button_clicked(self):
+        # Run PSO
         if self.algorithm_comboBox.currentText() == "PSO":
             selected_index = self.algorithm_comboBox.currentIndex()
             dim = 30
@@ -68,15 +74,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             obj_func = self.function_select()
             lower_bound = bounds[selected_index][0]
             upper_bound = bounds[selected_index][1]
-            self.sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
+            pso_sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
             self.algorithm_comboBox_type = 1
-            self.update_graph()
+            self.plot_algorithm_result(pso_sol, "PSO")
 
+        # Run SA
         if self.algorithm_comboBox_2.currentText() == "SA":
             selected_index = self.func_comboBox.currentIndex()
             dim = 30
             temp = int(self.sa_temp_2.text())
-            type = self.SA_type_2.currentText()
+            sa_type = self.SA_type_2.currentText()
             obj_func = self.function_select()
             lower_bounds = [None for _ in range(dim)]
             upper_bounds = [None for _ in range(dim)]
@@ -84,18 +91,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 lower_bounds[idx] = bounds[selected_index][0]
                 upper_bounds[idx] = bounds[selected_index][1]
 
-            if type == "Linear":
-                self.sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                             initial_temperature=temp, temperature_iterations=5000,
-                             final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
+            if sa_type == "Linear":
+                sa_sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
+                                   initial_temperature=temp, temperature_iterations=5000,
+                                   final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
             else:
-                self.sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                initial_temperature=temp, temperature_iterations=5000,
-                                final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
-
+                sa_sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
+                                      initial_temperature=temp, temperature_iterations=5000,
+                                      final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
             self.algorithm_comboBox_type = 2
-            self.update_graph()
+            self.plot_algorithm_result(sa_sol, "SA")
 
+        # Run GWO
         if self.algorithm_comboBox_3.currentText() == "GWO":
             selected_index = self.algorithm_comboBox.currentIndex()
             dim = 30
@@ -104,14 +111,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             obj_func = self.function_select()
             lower_bound = bounds[selected_index][0]
             upper_bound = bounds[selected_index][1]
-            SearchAgent_no = int(self.GWO_SearchAgentsNo_3.text())
-            Max_iter = int(self.GWO_maxIter_3.text())
-            decrease_From = int(self.GWO_decreaseFrom_3.text())
+            search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
+            max_iter = int(self.GWO_maxIter_3.text())
+            decrease_from = int(self.GWO_decreaseFrom_3.text())
 
-            self.sol = GWO(obj_func, lower_bound, upper_bound, dim, SearchAgent_no, Max_iter, decrease_From)
-            print(self.sol)
+            gwo_sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
             self.algorithm_comboBox_type = 3
-            self.update_graph()
+            self.plot_algorithm_result(gwo_sol, "GWO")
 
     def function_select(self):
         func = self.func_comboBox.currentIndex()
@@ -134,28 +140,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif func == 8:
             return functions.selectFunction(Functions.dixonprice)
 
-    def plot_best_fitness(self, iteration, fitness):
-        self.matplotlibWidget.axes.plot(iteration, fitness, 'ro', label='Best Fitness', markersize=8)
-        self.matplotlibWidget.draw()
-
-    def update_graph(self):
+    def plot_algorithm_result(self, algorithm_sol, algorithm_name):
         existing_legend = self.matplotlibWidget.axes.get_legend()
 
         if self.algorithm_comboBox_type == 1:
             color = "red"
-            algorithm_name = self.algorithm_comboBox.currentText()
         elif self.algorithm_comboBox_type == 2:
             color = "blue"
-            algorithm_name = self.algorithm_comboBox_2.currentText()
         elif self.algorithm_comboBox_type == 3:
             color = "green"
-            algorithm_name = self.algorithm_comboBox_3.currentText()
 
-        line = sns.lineplot(x=self.sol.x, y=self.sol.y, ax=self.matplotlibWidget.axes, color=color, label=algorithm_name)
+        line = sns.lineplot(x=algorithm_sol.x, y=algorithm_sol.y, ax=self.matplotlibWidget.axes, color=color,
+                            label=algorithm_name)
 
-        best_fitness_iteration = np.argmin(self.sol.y)
-        best_fitness_value = np.min(self.sol.y)
-        self.matplotlibWidget.axes.plot(best_fitness_iteration + 1, best_fitness_value, 'ro', label=f'Best Fitness ({algorithm_name})', markersize=8)
+        best_fitness_iteration = np.argmin(algorithm_sol.y)
+        best_fitness_value = np.min(algorithm_sol.y)
+        self.matplotlibWidget.axes.plot(best_fitness_iteration + 1, best_fitness_value, 'ro',
+                                        label=f'Best Fitness ({algorithm_name})', markersize=8)
 
         self.matplotlibWidget.axes.set_xlabel('Iteration count')
         self.matplotlibWidget.axes.set_ylabel('Fitness value')
