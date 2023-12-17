@@ -65,170 +65,80 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.matplotlibWidget.draw()
 
     def button_clicked(self):
-        # Run PSO
+    # Run PSO
         if self.algorithm_comboBox.currentText() == "PSO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            pso_sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
-            self.algorithm_comboBox_type = 1
-            self.plot_algorithm_result(pso_sol, "PSO")
+            self.run_algorithm(self.algorithm_comboBox, "PSO")
 
-        # Run PSO for combo box 2
-        if self.algorithm_comboBox_2.currentText() == "PSO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            pso_sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
-            self.algorithm_comboBox_type = 1
-            self.plot_algorithm_result(pso_sol, "PSO")
-
-        # Run PSO for combo box 3
-        if self.algorithm_comboBox_3.currentText() == "PSO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            pso_sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
-            self.algorithm_comboBox_type = 1
-            self.plot_algorithm_result(pso_sol, "PSO")
-
-        # Run SA
+    # Run SA
         if self.algorithm_comboBox.currentText() == "SA":
-            selected_index = self.func_comboBox.currentIndex()
-            dim = 30
-            temp = int(self.sa_temp_2.text())
-            sa_type = self.SA_type_2.currentText()
-            obj_func = self.function_select()
-            lower_bounds = [None for _ in range(dim)]
-            upper_bounds = [None for _ in range(dim)]
-            for idx in range(dim):
-                lower_bounds[idx] = bounds[selected_index][0]
-                upper_bounds[idx] = bounds[selected_index][1]
+            self.run_algorithm(self.algorithm_comboBox, "SA")
 
-            if sa_type == "Linear":
-                sa_sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                   initial_temperature=temp, temperature_iterations=5000,
-                                   final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
-            else:
-                sa_sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                      initial_temperature=temp, temperature_iterations=5000,
-                                      final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
-            self.algorithm_comboBox_type = 2
-            self.plot_algorithm_result(sa_sol, "SA")
-
-
-        # Run SA for combo box 2
-        if self.algorithm_comboBox_2.currentText() == "SA":
-            selected_index = self.func_comboBox.currentIndex()
-            dim = 30
-            temp = int(self.sa_temp_2.text())
-            sa_type = self.SA_type_2.currentText()
-            obj_func = self.function_select()
-            lower_bounds = [None for _ in range(dim)]
-            upper_bounds = [None for _ in range(dim)]
-            for idx in range(dim):
-                lower_bounds[idx] = bounds[selected_index][0]
-                upper_bounds[idx] = bounds[selected_index][1]
-
-            if sa_type == "Linear":
-                sa_sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                   initial_temperature=temp, temperature_iterations=5000,
-                                   final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
-            else:
-                sa_sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                      initial_temperature=temp, temperature_iterations=5000,
-                                      final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
-            self.algorithm_comboBox_type = 2
-            self.plot_algorithm_result(sa_sol, "SA")
-
-        # Run SA for combo box 3
-        if self.algorithm_comboBox_3.currentText() == "SA":
-            selected_index = self.func_comboBox.currentIndex()
-            dim = 30
-            temp = int(self.sa_temp_2.text())
-            sa_type = self.SA_type_2.currentText()
-            obj_func = self.function_select()
-            lower_bounds = [None for _ in range(dim)]
-            upper_bounds = [None for _ in range(dim)]
-            for idx in range(dim):
-                lower_bounds[idx] = bounds[selected_index][0]
-                upper_bounds[idx] = bounds[selected_index][1]
-
-            if sa_type == "Linear":
-                sa_sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                   initial_temperature=temp, temperature_iterations=5000,
-                                   final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
-            else:
-                sa_sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
-                                      initial_temperature=temp, temperature_iterations=5000,
-                                      final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
-            self.algorithm_comboBox_type = 2
-            self.plot_algorithm_result(sa_sol, "SA")
-
-
-
-        # Run GWO
+    # Run GWO
         if self.algorithm_comboBox.currentText() == "GWO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
-            max_iter = int(self.GWO_maxIter_3.text())
-            decrease_from = int(self.GWO_decreaseFrom_3.text())
+            self.run_algorithm(self.algorithm_comboBox, "GWO")
 
-            gwo_sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
-            self.algorithm_comboBox_type = 3
-            self.plot_algorithm_result(gwo_sol, "GWO")
+    # Run PSO for combo box 2
+        if self.algorithm_comboBox_2.currentText() == "PSO":
+            self.run_algorithm(self.algorithm_comboBox_2, "PSO")
 
-        # Run GWO for combo box 2
+    # Run SA for combo box 2
+        if self.algorithm_comboBox_2.currentText() == "SA":
+            self.run_algorithm(self.algorithm_comboBox_2, "SA")
+
+    # Run GWO for combo box 2
         if self.algorithm_comboBox_2.currentText() == "GWO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
-            max_iter = int(self.GWO_maxIter_3.text())
-            decrease_from = int(self.GWO_decreaseFrom_3.text())
+            self.run_algorithm(self.algorithm_comboBox_2, "GWO")
 
-            gwo_sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
-            self.algorithm_comboBox_type = 3
-            self.plot_algorithm_result(gwo_sol, "GWO")
+    # Run PSO for combo box 3
+        if self.algorithm_comboBox_3.currentText() == "PSO":
+            self.run_algorithm(self.algorithm_comboBox_3, "PSO")
 
-        # Run GWO for combo box 3
+    # Run SA for combo box 3
+        if self.algorithm_comboBox_3.currentText() == "SA":
+            self.run_algorithm(self.algorithm_comboBox_3, "SA")
+
+    # Run GWO for combo box 3
         if self.algorithm_comboBox_3.currentText() == "GWO":
-            selected_index = self.algorithm_comboBox.currentIndex()
-            dim = 30
-            pop_size = int(self.pso_pop_size.text())
-            num_gen = int(self.pso_num_gen.text())
-            obj_func = self.function_select()
-            lower_bound = bounds[selected_index][0]
-            upper_bound = bounds[selected_index][1]
-            search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
-            max_iter = int(self.GWO_maxIter_3.text())
-            decrease_from = int(self.GWO_decreaseFrom_3.text())
+            self.run_algorithm(self.algorithm_comboBox_3, "GWO")
 
-            gwo_sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
-            self.algorithm_comboBox_type = 3
-            self.plot_algorithm_result(gwo_sol, "GWO")
+def run_algorithm(self, combo_box, algorithm_name):
+    selected_index = self.func_comboBox.currentIndex()
+    dim = 30
+    obj_func = self.function_select()
+    lower_bound = bounds[selected_index][0]
+    upper_bound = bounds[selected_index][1]
+
+    if algorithm_name == "PSO":
+        pop_size = int(self.pso_pop_size.text())
+        num_gen = int(self.pso_num_gen.text())
+        algorithm_sol = PSO(obj_func, lower_bound, upper_bound, dim, pop_size, num_gen)
+    elif algorithm_name == "SA":
+        temp = int(self.sa_temp_2.text())
+        sa_type = self.SA_type_2.currentText()
+        lower_bounds = [None for _ in range(dim)]
+        upper_bounds = [None for _ in range(dim)]
+        for idx in range(dim):
+            lower_bounds[idx] = bounds[selected_index][0]
+            upper_bounds[idx] = bounds[selected_index][1]
+
+        if sa_type == "Linear":
+            algorithm_sol = SA_linear(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
+                                      initial_temperature=temp, temperature_iterations=5000,
+                                      final_temperature=0.0001, alpha=0.95, target_function=obj_func, verbose=True)
+        else:
+            algorithm_sol = SA_geometric(dim=dim, min_values=lower_bounds, max_values=upper_bounds, mu=0, sigma=1,
+                                         initial_temperature=temp, temperature_iterations=5000,
+                                         final_temperature=0.0001, alpha=0.98, target_function=obj_func, verbose=True)
+    elif algorithm_name == "GWO":
+        search_agents_no = int(self.GWO_SearchAgentsNo_3.text())
+        max_iter = int(self.GWO_maxIter_3.text())
+        decrease_from = int(self.GWO_decreaseFrom_3.text())
+
+        algorithm_sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
+
+    self.algorithm_comboBox_type = 1 if algorithm_name == "PSO" else 2 if algorithm_name == "SA" else 3
+    self.plot_algorithm_result(algorithm_sol, algorithm_name)
+
 
     def function_select(self):
         func = self.func_comboBox.currentIndex()
