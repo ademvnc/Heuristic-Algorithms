@@ -78,7 +78,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="HS">
      <widget class="QWidget" name="horizontalLayoutWidget_2">
@@ -122,6 +122,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="HS_HMCR"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_66">
+           <property name="text">
+            <string>dimension</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hs_dim"/>
          </item>
         </layout>
        </item>
@@ -169,7 +179,7 @@
         <x>0</x>
         <y>0</y>
         <width>171</width>
-        <height>124</height>
+        <height>131</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -203,6 +213,16 @@
           </property>
          </item>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_69">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="SA_dim_1"/>
        </item>
       </layout>
      </widget>
@@ -292,6 +312,16 @@
        <item>
         <widget class="QLineEdit" name="pso_num_gen"/>
        </item>
+       <item>
+        <widget class="QLabel" name="label_63">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="pso_dim"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -360,7 +390,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_crossType"/>
+          <widget class="QComboBox" name="GA_crossType">
+           <item>
+            <property name="text">
+             <string>1-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>uniform_crossover</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_7">
@@ -370,7 +416,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_selectType"/>
+          <widget class="QComboBox" name="GA_selectType">
+           <item>
+            <property name="text">
+             <string>roulette_wheel</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>tournament_selection</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </item>
@@ -426,82 +483,11 @@
      </property>
     </item>
    </widget>
-   <widget class="QComboBox" name="func_comboBox">
-    <property name="geometry">
-     <rect>
-      <x>1100</x>
-      <y>40</y>
-      <width>141</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="editable">
-     <bool>false</bool>
-    </property>
-    <item>
-     <property name="text">
-      <string>Ackley</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Griewank</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Schwefel</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Rastrigin</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Sphere</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Perm</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Zakharov</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Rosenbrock</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Dixon-Price</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="func_label">
-    <property name="geometry">
-     <rect>
-      <x>1120</x>
-      <y>20</y>
-      <width>111</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select a function:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="Run_button">
     <property name="geometry">
      <rect>
-      <x>1140</x>
-      <y>80</y>
+      <x>1060</x>
+      <y>200</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -577,7 +563,7 @@
     <property name="geometry">
      <rect>
       <x>1140</x>
-      <y>130</y>
+      <y>200</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -596,7 +582,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="HS_2">
      <widget class="QWidget" name="horizontalLayoutWidget_3">
@@ -640,6 +626,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="HS_HMCR_2"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_67">
+           <property name="text">
+            <string>dimension</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hs_dim_2"/>
          </item>
         </layout>
        </item>
@@ -687,7 +683,7 @@
         <x>0</x>
         <y>0</y>
         <width>171</width>
-        <height>124</height>
+        <height>131</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -721,6 +717,16 @@
           </property>
          </item>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_70">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="SA_dim_2"/>
        </item>
       </layout>
      </widget>
@@ -810,6 +816,16 @@
        <item>
         <widget class="QLineEdit" name="pso_num_gen_2"/>
        </item>
+       <item>
+        <widget class="QLabel" name="label_64">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="pso_dim_2"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -878,7 +894,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_crossType_2"/>
+          <widget class="QComboBox" name="GA_crossType_2">
+           <item>
+            <property name="text">
+             <string>1-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>uniform_crossover</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_40">
@@ -888,7 +920,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_selectType_2"/>
+          <widget class="QComboBox" name="GA_selectType_2">
+           <item>
+            <property name="text">
+             <string>roulette_wheel</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>tournament_selection</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </item>
@@ -906,7 +949,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="HS_3">
      <widget class="QWidget" name="horizontalLayoutWidget_5">
@@ -950,6 +993,16 @@
          </item>
          <item>
           <widget class="QLineEdit" name="HS_HMCR_3"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_68">
+           <property name="text">
+            <string>dimension</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="hs_dim_3"/>
          </item>
         </layout>
        </item>
@@ -997,7 +1050,7 @@
         <x>0</x>
         <y>0</y>
         <width>171</width>
-        <height>124</height>
+        <height>131</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_19">
@@ -1031,6 +1084,16 @@
           </property>
          </item>
         </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_71">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="SA_dim_3"/>
        </item>
       </layout>
      </widget>
@@ -1120,6 +1183,16 @@
        <item>
         <widget class="QLineEdit" name="pso_num_gen_3"/>
        </item>
+       <item>
+        <widget class="QLabel" name="label_65">
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="pso_dim_3"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -1188,7 +1261,23 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_crossType_3"/>
+          <widget class="QComboBox" name="GA_crossType_3">
+           <item>
+            <property name="text">
+             <string>1-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2-point_crossover</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>uniform_crossover</string>
+            </property>
+           </item>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_60">
@@ -1198,7 +1287,18 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="GA_selectType_3"/>
+          <widget class="QComboBox" name="GA_selectType_3">
+           <item>
+            <property name="text">
+             <string>roulette_wheel</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>tournament_selection</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </item>
@@ -1206,13 +1306,102 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>10</y>
+      <width>181</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_23">
+     <item>
+      <widget class="QLabel" name="func_label">
+       <property name="text">
+        <string>Select a function:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="func_comboBox">
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <item>
+        <property name="text">
+         <string>Ackley</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Griewank</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Schwefel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Rastrigin</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Sphere</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Perm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Zakharov</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Rosenbrock</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dixon-Price</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_61">
+       <property name="text">
+        <string>Lower bound</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lower_bound"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_62">
+       <property name="text">
+        <string>Upper bound</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="upper_bound"/>
+     </item>
+    </layout>
+   </widget>
    <zorder>algorithm_comboBox</zorder>
    <zorder>algorithm_label</zorder>
    <zorder>stackedWidget</zorder>
    <zorder>algorithm_label_2</zorder>
    <zorder>algorithm_comboBox_2</zorder>
-   <zorder>func_comboBox</zorder>
-   <zorder>func_label</zorder>
    <zorder>Run_button</zorder>
    <zorder>verticalLayoutWidget</zorder>
    <zorder>algorithm_label_3</zorder>
@@ -1220,6 +1409,7 @@
    <zorder>clearGraphButton</zorder>
    <zorder>stackedWidget_3</zorder>
    <zorder>stackedWidget_2</zorder>
+   <zorder>verticalLayoutWidget_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -1227,7 +1417,7 @@
      <x>0</x>
      <y>0</y>
      <width>1275</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

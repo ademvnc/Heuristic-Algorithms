@@ -125,6 +125,8 @@ def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
 
         Convergence_curve[l] = Alpha_score
         ret_score=Alpha_score
+        s.x.append(l)
+        s.y.append(Alpha_score)
 
       
 
@@ -135,4 +137,4 @@ def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
     s.optimizer = "GWO"
     s.objfname = objf.__name__
 
-    return s, ret_score
+    return s
