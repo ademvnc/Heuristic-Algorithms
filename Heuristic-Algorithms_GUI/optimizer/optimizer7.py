@@ -255,6 +255,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.matplotlibWidget.axes.set_xlabel('Iteration count')
         self.matplotlibWidget.axes.set_ylabel('Fitness value')
 
+        # En iyi fitness değerini bul
+        best_fitness_index = np.argmin(self.sol.y)
+        best_fitness = self.sol.y[best_fitness_index]
+
+         # En iyi fitness değerini gösteren bir nokta ekle
+        self.matplotlibWidget.axes.scatter(self.sol.x[best_fitness_index], best_fitness, color='red', s=50, marker='o', label='Best Fitness')
+
         self.matplotlibWidget.axes.legend(loc="upper right")
 
         self.matplotlibWidget.draw()
