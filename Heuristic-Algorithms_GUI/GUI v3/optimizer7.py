@@ -90,7 +90,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
       
         obj_func = self.function_select()
         
-        if algorithm_name == "PSO" :  # PSO Algorithm
+        if algorithm_name == "PSO" :  # PSO
             if algorithm_type == 1:
                 pop_size = int(self.pso_pop_size.text())
                 num_gen = int(self.pso_num_gen.text())
@@ -138,7 +138,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                              alpha=0.98, target_function=obj_func, verbose=True)
             self.update_graph(algorithm_type)
 
-        elif algorithm_name == "GWO":  # GWO Algorithm
+        elif algorithm_name == "GWO":  # GWO
             if algorithm_type == 1:
                 search_agents_no = int(self.GWO_SearchAgentsNo.text())
                 max_iter = int(self.GWO_maxIter.text())
@@ -160,8 +160,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             upper_bound = float(self.upper_bound.text())
             self.sol = GWO(obj_func, lower_bound, upper_bound, dim, search_agents_no, max_iter, decrease_from)
             self.update_graph(algorithm_type)
-
-        elif algorithm_name == "HS":  # HS Algorithm
+        elif algorithm_name == "HS":  # HS
             
             
             if algorithm_type == 1:
@@ -194,7 +193,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.sol=harmonySearch(hms, iter, hmcr, par, bw, nnew, lower_bounds, upper_bounds,obj_func)
             self.update_graph(algorithm_type)
         
-        elif algorithm_name == "GA":  #GA Algorithm
+        elif algorithm_name == "GA": 
             
            
             if algorithm_type == 1:

@@ -1,17 +1,24 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon May 16 00:27:50 2016
+
 @author: Hossam Faris
 """
 
 import random
 import numpy
+import math
 from solution import solution
 import time
 
 
-def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
-    ret_score=0
+def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter):
+
+    # Max_iter=1000
+    # lb=-100
+    # ub=100
+    # dim=30
+    # SearchAgents_no=5
 
     # initialize alpha, beta, and delta_pos
     Alpha_pos = numpy.zeros(dim)
@@ -39,7 +46,7 @@ def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
     s = solution()
 
     # Loop counter
-  
+    print('GWO is optimizing  "' + objf.__name__ + '"')
 
     timerStart = time.time()
     s.startTime = time.strftime("%Y-%m-%d-%H-%M-%S")
@@ -74,8 +81,7 @@ def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
                 Delta_score = fitness  # Update delta
                 Delta_pos = Positions[i, :].copy()
 
-        ####decrease function
-        a = decrease_From - l * ((decrease_From) / Max_iter)
+        a = 2 - l * ((2) / Max_iter)
         # a decreases linearly fron 2 to 0
 
         # Update the Position of search agents including omegas
@@ -124,15 +130,16 @@ def GWO(objf, lb, ub, dim, SearchAgents_no, Max_iter, decrease_From=2):
                 Positions[i, j] = (X1 + X2 + X3) / 3  # Equation (3.7)
 
         Convergence_curve[l] = Alpha_score
-        ret_score=Alpha_score
 
-      
+        if l % 1 == 0:
+            print(["At iteration " + str(l) + " the best fitness is " + str(Alpha_score)])
 
     timerEnd = time.time()
     s.endTime = time.strftime("%Y-%m-%d-%H-%M-%S")
     s.executionTime = timerEnd - timerStart
     s.convergence = Convergence_curve
     s.optimizer = "GWO"
+    s.bestIndividual = Alpha_pos
     s.objfname = objf.__name__
 
-    return s, ret_score
+    return s
