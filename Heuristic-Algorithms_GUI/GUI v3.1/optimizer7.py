@@ -1,6 +1,8 @@
-import GA
-from GWO import GWO
-from HS import harmonySearch
+from Additional_Algorithms import GA
+from Additional_Algorithms import GWO
+from Additional_Algorithms import harmonySearch
+from Additional_Algorithms import PSO
+from Additional_Algorithms import SA_geometric, SA_linear
 from ui_mainwindow import Ui_MainWindow
 from PyQt5.QtGui import QPixmap
 from io import BytesIO
@@ -10,8 +12,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget,QGraphicsScene, QGraphicsPixmapItem
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-from PSO import PSO
-from SA import SA_geometric, SA_linear
+
+
 import functions
 from enumFunctions import Functions
 import seaborn as sns
