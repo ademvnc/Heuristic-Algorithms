@@ -261,10 +261,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         best_fitness = self.sol.y[best_fitness_index]
 
         # En iyi uygunluk değerini eğride bir nokta olarak göster
-        self.matplotlibWidget.axes.scatter(self.sol.x[best_fitness_index], best_fitness, color='red', label='En İyi Uygunluk')
+        self.matplotlibWidget.axes.scatter(self.sol.x[best_fitness_index], best_fitness, color='red', label='Best Fitness')
 
-        self.matplotlibWidget.axes.set_xlabel('İterasyon Sayısı')
-        self.matplotlibWidget.axes.set_ylabel('Uygunluk Değeri')
+        self.matplotlibWidget.axes.set_xlabel('Iteration Count')
+        self.matplotlibWidget.axes.set_ylabel('Fittnes Count')
 
         self.matplotlibWidget.axes.legend(loc="upper right")
 
