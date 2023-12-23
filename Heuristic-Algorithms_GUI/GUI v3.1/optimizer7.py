@@ -12,7 +12,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget,QGraphicsScene, QGraphicsPixmapItem
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-
+import sklearn
 
 import functions
 from enumFunctions import Functions
@@ -224,6 +224,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             upper_bound = float(self.upper_bound.text())
             self.sol = GA.GA(obj_func, lower_bound, upper_bound, dimension, pop_size, num_of_gen,mut_prob,crossover_type,selection_type)
             self.update_graph(algorithm_type)
+
+
     def function_select(self):
             func=self.func_comboBox.currentIndex()
             if func==0:
@@ -250,11 +252,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 
-    def update_graph(self,algorithm_type):
+    def update_graph(self, algorithm_type):
+        # Mevcut yakınsama eğrisini çiz
         line = sns.lineplot(x=self.sol.x, y=self.sol.y, ax=self.matplotlibWidget.axes, label=self.get_algorithm_label(algorithm_type))
 
-        self.matplotlibWidget.axes.set_xlabel('Iteration count')
-        self.matplotlibWidget.axes.set_ylabel('Fitness value')
+        # En iyi uygunluk değerinin indeksini bul
+        best_fitness_index = np.argmin(self.sol.y)
+        best_fitness = self.sol.y[best_fitness_index]
+
+        # En iyi uygunluk değerini eğride bir nokta olarak göster
+        self.matplotlibWidget.axes.scatter(self.sol.x[best_fitness_index], best_fitness, color='red', label='En İyi Uygunluk')
+
+        self.matplotlibWidget.axes.set_xlabel('İterasyon Sayısı')
+        self.matplotlibWidget.axes.set_ylabel('Uygunluk Değeri')
 
         self.matplotlibWidget.axes.legend(loc="upper right")
 
