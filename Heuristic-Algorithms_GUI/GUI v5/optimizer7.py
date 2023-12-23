@@ -346,16 +346,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 
-    def update_graph(self,algorithm_type):
+    def update_graph(self, algorithm_type):
+       
         line = sns.lineplot(x=self.sol.x, y=self.sol.y, ax=self.matplotlibWidget.axes, label=self.get_algorithm_label(algorithm_type))
 
+        # En iyi uygunluk değerini ve ilgili x değerini bulma
+        best_fitness = min(self.sol.y)
+        best_x = self.sol.x[self.sol.y.index(best_fitness)]
+
+        # En iyi uygunluk değerini grafikte nokta olarak gösterme ve legend için bir etiket oluşturma
+        best_fitness_point = self.matplotlibWidget.axes.scatter([best_x], [best_fitness], color='red', label='Best Fitness')
+
+        
         self.matplotlibWidget.axes.set_xlabel('Iteration count')
         self.matplotlibWidget.axes.set_ylabel('Fitness value')
 
-        self.matplotlibWidget.axes.legend(loc="upper right")
-
-        self.matplotlibWidget.draw()
         
+        handles, labels = self.matplotlibWidget.axes.get_legend_handles_labels()
+        self.matplotlibWidget.axes.legend(handles=handles, labels=labels, loc="upper right")
+
+       
+        self.matplotlibWidget.draw()
 
     def get_algorithm_label(self,algorithm_type):
         if algorithm_type == 1:
